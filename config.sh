@@ -2,7 +2,7 @@
 
 ###########################################
 #                                         #
-#      Red vs Blue Team Config            #
+#      Red vs Blue Team Configuration     #
 #      @543hn                             #
 #                                         #
 ###########################################
@@ -11,17 +11,12 @@
 # CONFIG  #
 ###########
 
-scoring_port="80" # Port of scoring server
-check_time=60 # Time in seconds between checks
-check_points=1 # Points per service per check
-patch_port="8000" # Port of patch server
-team_number=1 # Number of teams
-sla_times=5 # Number of failed checks to incur an SLA violation
-sla_points=5 # Number of points to deduct per SLA
+#team_number=1 # Number of teams DISABLED until multi-team support
+#fake_data=1 # Enable or disable competing against fake teams.
 
-# Checks: ICMP, SSH, HTTP, SMTP, RDP, DNS, FTP, SMB
-team1_pass="password"
-team1_image1="image1" # Image name
-    team1_image1_checks=("ssh" "http") # Insert checks in this array
 
-    
+image_number="5" # Number of images
+image1="image1" # Image name
+image1_ip="192.168.1.200"
+image1_services=("ssh_22" "http_80") # Number and port of services to check
+
