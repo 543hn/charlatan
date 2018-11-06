@@ -25,8 +25,7 @@ source functions.sh
 trap_ctrlC() {
     echo -e "\n${plus} Killing webservers..."
     pkill -xf "python3 -m http.server"
-    #echo -e "\n${plus} Archiving data in archives/scoringdata-$(date +"%Y-%m-%d").zip..."
-    #zip -r "archives/scoringdata-$(date +"%Y-%m-%d").zip" data
+
     echo -e "${plus} Bye!"
     exit 0
 }
@@ -45,6 +44,7 @@ while true; do
     check_services
     update_web
     random_sleep
+    source config.sh
     source functions.sh
 done
 
