@@ -44,6 +44,7 @@ check_sla(){
     done
 }
 
+
 ping_service(){
     if nmap -Pn -p "${port}" --max-retries 3 --host-timeout 3 "$1" \
         | grep "open" | grep -q "${name}"; then
@@ -74,21 +75,18 @@ service_report(){
         
 random_sleep(){
     #check_time="$(( $( shuf -i0-60 -n1 ) + 120 ))"
-    check_time=5
+    check_time="$(( $( shuf -i0-60 -n1 ) + 0 ))"
     echo -e "${plus} Sleeping for $check_time."
     sleep $check_time
 }
 
 create_files(){
     rm -r data/*
-    touch data/sla_violations
+    touch data/sla_violations.txt
+    echo -n > site/announcements
+    echo -n > site/injects
     echo "0" > data/total_score
     echo -e "${plus} Removed data/* and reinstated necessary files."
-}
-
-injector(){
-    :
-    # grep if inject already exists, if not, put it in there
 }
 
 update_web(){

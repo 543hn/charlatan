@@ -18,7 +18,6 @@ if [[ $EUID -eq 0 ]]; then
 fi
 
 # Load config and functions
-source config.sh
 source functions.sh
 
 # Catch CTRL+C to avoid having 50 webservers running
@@ -32,12 +31,32 @@ trap_ctrlC() {
 
 trap trap_ctrlC SIGINT SIGTERM
 
+# Define fake injector
+injector(){
+    :
+}
+
 # Webserver
 python3 -m http.server &
+update_web
 echo -e "${plus} Launched webserver."
 
 # Scoring loop
 create_files
+
+echo -e "${plus} Edit site/announcements and site/injects to add them."
+echo -e "${plus} Hit enter to begin scoring." && read
+
+# Define injector -- only want to run it once
+injector(){
+    (echo -e "${plus} Injecting '$1' in $2 minutes." && sleep "$2m" && echo -e "${plus} Injecting '$1' now." && echo -e "$1<br>" >> site/injects) & disown
+}
+
+source config.sh
+
+injector(){
+    :   
+}
 
 while true; do
     check_sla
