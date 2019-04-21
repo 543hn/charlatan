@@ -1,29 +1,100 @@
-# Red vs Blue Team Scoring Engine (CyberPatriot and CCDC)
+# Scoring Engine (CyberPatriot NSMC and CCDC)
 
-__EXTREMELY__ SIMPLE scoring/patch server
-Why is it written in bash? why not 
-Requirements: bash
-python3
-nmap
-serves as practice for ONE TEAM, is _not_ competition software (yet)
+__Extremely portable and simple scoring engine__. Written purely in bash. No database. Just configure it in `config` and launch with `./charlatan.sh`.
 
-## Section 1: Patch Server
+Requirements:
 
-Files in `./patch/` will be served with a basic Python HTTP server on port 8000/patch. Config data inputted in `config.sh` will be used to score service uptime with nmap.
+- `bash` _( >= version 3 )_
+- `python3`
+- `nmap`
 
-todo: add password 
-multiple teams
-team graph
-Injects, announcements, etc
+## Screenshots
+
+_Default index.html view_
+![default](docs/default.png)
+
+_Alternative uptime.html view_
+![alternate](docs/alternate.png)
+
+_Web output and terminal_
+![terminal](docs/terminal.png)
+
+## Structure
+
+
+```bash
+.
+├── charlatan.sh # entry point, runs all other scripts
+├── config # edit this file to input competition, image, ip, service configurations
+├── data # stores all data
+│   ├── announcements # script pulls announcements from here
+│   ├── global # global data (like number of checks performed) here
+│   ├── injects # script pulls injects from here
+│   ├── scoring_status # html for PASS/FAIL table
+│   ├── sla_violations
+│   ├── team1 # team folder
+│   │   ├── dosidos
+│   │   │   └── dosidos_https
+│   │   ├── samoas
+│   │   │   ├── samoas_http
+│   │   │   └── samoas_ssh
+│   │   └── totals # team total points, sla violations
+│   ├── team2 
+│   │   ├── dosidos # image name folder
+│   │   │   └── dosidos_https # image service file
+│   │   ├── samoas
+│   │   │   ├── samoas_http
+│   │   │   └── samoas_ssh
+│   │   └── totals
+│   └── uptime_status # html for uptime table
+├── README.md
+├── scripts # contains all scripts
+│   ├── ccs_server.sh
+│   ├── color_codes.sh
+│   ├── dump_db.sh
+│   ├── init_config.sh
+│   ├── injector.sh
+│   ├── score_cycle.sh
+│   ├── sshcheck.sh
+│   ├── tallyer.sh
+│   ├── uptime_calculator.sh
+│   ├── vgraph.sh
+│   └── web_update.sh
+└── web
+    ├── background.png
+    ├── favicon.ico
+    ├── index.html
+    └── patch
+        ├── Firefox.exe
+        └── geany-1.3
+```
+
+### Patch Server
+
+Files in `./web/patch/` will be served with a basic Python HTTP server on patch. Put the files in there.
+
+### Injects and Announcements
+
+As it stands, just edit `data/injects` and `data/announcements`, and the 
+
+### todo
+
+better timer (will always go over time limit -- compensate for nmap, or don't even have a timer?)
+add passwords and more checks
+better interface for Injects, announcements, etc
 checking service configs
 making sure nmap is installed
 being able to pause/interrupt and resume
-figure out how to auto-create check array
+don't call nmap fifty times when there's a bunch of services
 
-## Configuring an Image
-
-Go to `config.sh` and read the comments. Self explanatory.
-
-
-
-
+- charlatan: initiates script, runs scripts in correct order
+- ccs_server: listens and increments ccs scores
+- init_config: creates filesystem from configuration
+- parse_config: 
+- dump_db: dumps filesystem data into single file
+- web_update: updates web interface with data from fs
+- injector: queues injects. allows cancelation, changing placement, etc
+- announcer: same thing but for announcements
+- score_cycle: scores services and increments correct files in system
+- tally: tallies totals and stuff
+- add_service: see name (add checks offset to accurately calculate uptime)
