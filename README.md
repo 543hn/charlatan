@@ -1,5 +1,7 @@
 # Scoring Engine (CyberPatriot NSMC and CCDC)
 
+WARNING: Bash shouldn't be used to write a scoring engine. Alas, here we are. I'm leaving this up for posterity's sake and because it's funny.
+
 __Extremely portable and simple scoring engine__. Written purely in bash. No database. Just configure it in `config` and launch with `./charlatan.sh`.
 
 Requirements:
